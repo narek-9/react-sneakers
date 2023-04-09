@@ -1,6 +1,11 @@
 export default function Drawer() {
    return (
-      <div className="overlay">
+      <div
+         style={{
+            display: " none",
+         }}
+         className="overlay"
+      >
          <div className="drawer">
             <h2 className="d-flex justify-between mb-30">
                Корзина
