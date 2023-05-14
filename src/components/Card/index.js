@@ -15,13 +15,14 @@ export default function Card({
 }) {
   const { isItemAdded } = useContext(AppContext);
   const [isFavorite, setIsFavorite] = useState(favorited);
+  const obj = { id, parentId: id, title, imageUrl, price };
 
   const onClickPlus = () => {
-    onPlus({ id, title, imageUrl, price });
+    onPlus(obj);
   };
 
   const onClickFavorie = () => {
-    onFavorite({ id, title, imageUrl, price });
+    onFavorite(obj);
     setIsFavorite(!isFavorite);
   };
 
@@ -44,14 +45,17 @@ export default function Card({
         </ContentLoader>
       ) : (
         <>
-          <div onClick={onClickFavorie} className={styles.favorite}>
-            <img
-              width={15}
-              height={15}
-              src={isFavorite ? "/img/liked.svg" : "/img/unliked.svg"}
-              alt="Unliked"
-            />
-          </div>
+          {onFavorite && (
+            <div onClick={onClickFavorie} className={styles.favorite}>
+              <img
+                width={15}
+                height={15}
+                src={isFavorite ? "/img/liked.svg" : "/img/unliked.svg"}
+                alt="Unliked"
+              />
+            </div>
+          )}
+
           <img width="100%" height={135} src={imageUrl} alt="Sneakers" />
           <h5>{title}</h5>
           <div className="d-flex justify-between align-center">
@@ -59,19 +63,23 @@ export default function Card({
               <span>Цена: </span>
               <b>{price} руб.</b>
             </div>
-            <button
-              className={styles.plus}
-              onClick={() => onClickPlus({ id, title, price, imageUrl })}
-            >
-              <img
-                width={11}
-                height={11}
-                src={
-                  isItemAdded(id) ? "/img/btn-checked.svg" : "/img/btn-plus.svg"
-                }
-                alt="Plus"
-              />
-            </button>
+            {onPlus && (
+              <button
+                className={styles.plus}
+                onClick={() => onClickPlus({ id, title, price, imageUrl })}
+              >
+                <img
+                  width={11}
+                  height={11}
+                  src={
+                    isItemAdded(id)
+                      ? "/img/btn-checked.svg"
+                      : "/img/btn-plus.svg"
+                  }
+                  alt="Plus"
+                />
+              </button>
+            )}
           </div>
         </>
       )}
